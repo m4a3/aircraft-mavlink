@@ -77,6 +77,25 @@
         <param index="6">Empty.</param>
         <param index="7">Empty.</param>
       </entry>
+      <entry value="41100" name="MAV_CMD_DO_CONTAINMENT_MANAGER">
+        <description>Begin managing and/or monitoring containment from the mission path. </description>
+        <param index="1" label="Active" minValue="0" maxValue="2" increment="1">0: Disabled. 1: Monitoring Only. 2: Active Control</param>
+        <param index="2" label="Radius" units="m">Acceptable radius from mission path, defined in the plane normal to the mission leg</param>
+        <param index="3" label="Dead Zone" minValue="0" maxValue="100" increment="1" units="%">Dead zone in which no action is taken</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
+      <entry value="41101" name="MAV_CMD_DO_SET_WEATHERVANE">
+        <description>Set the weathervane mode.</description>
+        <param index="1" label="Active" minValue="-1" maxValue="4" increment="1">-1: Reset to param behavior. 0: Disabled. 1: Nose into wind. 2:Nose or tail into wind. 3:Side into wind. 4:tail into wind</param>
+        <param index="2">Empty</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
       <entry value="42000" name="MAV_CMD_POWER_OFF_INITIATED" hasLocation="false" isDestination="false">
         <description>A system wide power-off event has been initiated.</description>
         <param index="1">Empty.</param>
@@ -349,6 +368,36 @@
         <param index="5">Empty</param>
         <param index="6">Empty</param>
         <param index="7">Empty</param>
+      </entry>
+      <entry value="43500" name="MAV_CMD_GET_CCDL_STATUS" hasLocation="false" isDestination="false">
+        <description>The request the current stats of the ccdl network on a target.</description>
+        <param index="1">Empty.</param>
+        <param index="2">Empty.</param>
+        <param index="3">Empty.</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
+      <entry value="43501" name="MAV_CMD_MNA_SET_OVERRIDE_VOTE" hasLocation="false" isDestination="false">
+        <description>Allow to enable overriding the vote of the FCU.</description>
+        <param index="1" label="override" minValue="0" maxValue="1" increment="1">Enable the vote override.</param>
+        <param index="2" label="override_target" minValue="0" maxValue="255">Override target sysid.</param>
+        <param index="3">Empty.</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
+      <entry value="43502" name="MAV_CMD_MNA_SET_MOT_STOP" hasLocation="false" isDestination="false">
+        <description>Ability to stop the motors.</description>
+        <param index="1" label="enable" minValue="0" maxValue="1" increment="1">Enable the motor stop.</param>
+        <param index="2" label="stop" minValue="0" increment="1">Bitmask of motors to stop.</param>
+        <param index="3" label="timeout" units="ms" minValue="0">Timeout for the motor stop, after which the motors will be restarted.</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
       </entry>
     </enum>
     <enum name="SCRIPTING_CMD">
@@ -1178,6 +1227,24 @@
       <entry value="2" name="OSD_PARAM_INVALID_PARAMETER_INDEX"/>
       <entry value="3" name="OSD_PARAM_INVALID_PARAMETER"/>
     </enum>
+    <enum name="CHUTE_RELEASE_REASON" bitmask="true">
+      <description>Reasons for chute release.</description>
+      <entry value="1" name="CHUTE_RELEASE_SINK_RATE">
+        <description>Sink rate maintained over the speed limit.</description>
+      </entry>
+      <entry value="2" name="CHUTE_RELEASE_ACCEL_FALLING">
+        <description>Detected aircraft falling.</description>
+      </entry>
+      <entry value="4" name="CHUTE_RELEASE_CONTROL_LOSS">
+        <description>Loss of control.</description>
+      </entry>
+      <entry value="8" name="CHUTE_RELEASE_MISSION_ITEM">
+        <description>Mission release.</description>
+      </entry>
+      <entry value="16" name="CHUTE_RELEASE_MANUAL">
+        <description>Manual release.</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <message id="150" name="SENSOR_OFFSETS">
@@ -1888,6 +1955,58 @@
       <field type="uint16_t[4]" name="totalcurrent" units="mAh">Total current.</field>
       <field type="uint16_t[4]" name="rpm" units="rpm">RPM (eRPM).</field>
       <field type="uint16_t[4]" name="count">count of telemetry packets received (wraps at 65535).</field>
+    </message>
+    <message id="12000" name="CCDL_TIMEOUT">
+      <description>The CCDL timeout message is used to determine if the system is alive and there is a route between systems. The CCDL message should not be forwarded outside the CCDL network.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint32_t" name="seq">Sequence number.</field>
+      <field type="uint8_t" name="type">Packet type : from primary (0) or from backup (1).</field>
+      <field type="uint8_t" name="backup_working">Notice if backup route for this ccdl is working.</field>
+      <field type="uint8_t" name="target_system">Fcu target id.</field>
+      <field type="uint8_t" name="target_component">Fcu component id, leave 0 by default.</field>
+    </message>
+    <message id="12001" name="LOG_REQUEST_LAST">
+      <description>Request the last generated log. If there are no log files available this request shall be answered with one LOG_ENTRY message with id = 0 and num_logs = 0.</description>
+      <field type="uint8_t" name="target_system">System ID</field>
+      <field type="uint8_t" name="target_component">Component ID</field>
+    </message>
+    <message id="12002" name="CCDL_STATUS">
+      <description>The send the current stats of the ccdl network on a target.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t[2]" name="mavlink_channel">mavlink channel ID.</field>
+      <field type="uint8_t[2]" name="serial_port">serial port ID.</field>
+      <field type="uint8_t[2]" name="primary_target">primary target id.</field>
+      <field type="uint8_t[2]" name="primary_working">primary working.</field>
+      <field type="uint32_t[2]" name="primary_last_hb_ms" units="ms">primary last hb ms.</field>
+      <field type="uint8_t[2]" name="backup_working">backup working.</field>
+      <field type="uint32_t[2]" name="backup_last_hb_ms" units="ms">backup last hb ms.</field>
+      <field type="uint8_t" name="target_system">Fcu target id.</field>
+      <field type="uint8_t" name="target_component">Fcu component id, leave 0 by default.</field>
+    </message>
+    <message id="12003" name="MNA_CHUTE_STATUS">
+      <description>The send the current stats of the chute system on a target.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t" name="target_system">Target id.</field>
+      <field type="uint8_t" name="target_component">Component id, leave 0 by default.</field>
+      <field type="uint8_t" name="release_reason" enum="CHUTE_RELEASE_REASON" display="bitmask">Release reason.</field>
+      <field type="uint32_t" name="release_timer_ms" units="ms">Time in ms until the release.</field>
+      <field type="uint8_t" name="standby_state">Standby state (Enabled = True).</field>
+      <field type="int8_t" name="enabled">Enabled (Positive for enabled).</field>
+      <field type="uint8_t" name="release_initiated">Release initiated (0 for no, 1 for release or releasing).</field>
+    </message>
+    <message id="12004" name="MNA_STANDBY_STATUS">
+      <description>The standby status on a target.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t" name="target_system">Target id.</field>
+      <field type="uint8_t" name="target_component">Component id, leave 0 by default.</field>
+      <field type="uint8_t" name="standby_state">Standby state (Enabled = True).</field>
+    </message>
+    <message id="12005" name="MNA_VOTE_STATUS">
+      <description>The fcu vote status on a target.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t" name="target_system">Target id.</field>
+      <field type="uint8_t" name="target_component">Component id, leave 0 by default.</field>
+      <field type="uint8_t" name="fcu_vote">ID of the FCU voted.</field>
     </message>
   </messages>
 </mavlink>
