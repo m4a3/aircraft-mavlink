@@ -2766,6 +2766,9 @@
       <entry value="4" name="MAV_LANDED_STATE_LANDING">
         <description>MAV currently landing</description>
       </entry>
+      <entry value="5" name="MAV_LANDED_STATE_ON_GROUND_MAYBE">
+        <description>MAV is potentially on the ground but not confirmed</description>
+      </entry>
     </enum>
     <enum name="ADSB_ALTITUDE_TYPE">
       <description>Enumeration of the ADSB altimeter types</description>
