@@ -1,0 +1,49 @@
+name: Update issue status
+
+on:
+  issues:
+    types: [opened, reopened, closed]
+  pull_request:
+    types: [opened, reopened, edited, converted_to_draft, ready_for_review, closed]
+
+# map fields with customized labels
+env:
+  BACKLOG: Backlog
+  PLANNED: Planned
+  PROGRESS: In progress
+  REVIEW: In review
+  DONE: Done
+  organization: m4a3
+  project_num: 61
+
+jobs:
+  assign_status:
+    name: Update project status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine node id
+        id: find-id
+        uses: haya14busa/action-cond@v1.2.1
+        with:
+          cond: ${{ github.event_name == 'issues' }}
+          if_true: ${{ github.event.issue.node_id }}
+          if_false: ${{ github.event.pull_request.node_id }}
+      - name: Determine target status
+        id: new-status
+        uses: thaitype/actions-switch-case@v1
+        with:
+          default: None
+          conditionals-with-values: |
+            ${{ github.event.action == 'closed' }} => ${{ env.DONE }}
+            ${{ github.event_name == 'issues' }} => ${{ env.BACKLOG }}
+            ${{ github.event.pull_request.draft != true }} => ${{env.REVIEW}}
+            ${{ github.event.pull_request.draft == true }} => ${{env.PROGRESS}}
+      - name: Move to ${{ steps.new-status.outputs.match }}
+        uses: leonsteinhaeuser/project-beta-automations@v2.2.1
+        with:
+          gh_token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          organization: ${{ env.organization }}
+          project_id: ${{ env.project_num }}
+          resource_node_id: ${{ steps.find-id.outputs.value }}
+          status_value: ${{ steps.new-status.outputs.match }} # Target status
+          move_related_issues: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
