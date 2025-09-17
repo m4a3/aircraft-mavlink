@@ -89,7 +89,7 @@
       </entry>
       <entry value="41101" name="MAV_CMD_DO_SET_WEATHERVANE">
         <description>Set the weathervane mode.</description>
-        <param index="1" label="Active" minValue="-1" maxValue="4" increment="1">-1: Reset to param behavior. 0: Disabled. 1: Nose into wind. 2:Nose or tail into wind. 3:Side into wind. 4:tail into wind</param>
+        <param index="1" label="Active" minValue="-2" maxValue="4" increment="1">-2: Reset to param behavior. -1:Enable for takeoff and landing only. 0: Disabled. 1: Nose into wind. 2:Nose or tail into wind. 3:Side into wind. 4:tail into wind</param>
         <param index="2">Empty</param>
         <param index="4">Empty.</param>
         <param index="5">Empty.</param>
