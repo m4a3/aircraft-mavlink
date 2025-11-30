@@ -1952,5 +1952,12 @@
       <field type="int8_t" name="enabled">Enabled (Positive for enabled).</field>
       <field type="uint8_t" name="release_initiated">Release initiated (0 for no, 1 for release or releasing).</field>
     </message>
+    <message id="12004" name="MNA_STANDBY_STATUS">
+      <description>The standby status on a target.</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t" name="target_system">Target id.</field>
+      <field type="uint8_t" name="target_component">Component id, leave 0 by default.</field>
+      <field type="uint8_t" name="standby_state">Standby state (Enabled = True).</field>
+    </message>
   </messages>
 </mavlink>
