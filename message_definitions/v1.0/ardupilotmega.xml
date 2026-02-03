@@ -399,6 +399,24 @@
         <param index="6">Empty.</param>
         <param index="7">Empty.</param>
       </entry>
+      <entry value="43503" name="MAV_CMD_MNA_TAG" hasLocation="false" isDestination="false">
+        <description>Mission tag item to allow working ot the stage of the mission.</description>
+        <param index="1" label="tag" enum="MAV_CMD_MNA_TAG_TAGS">Tag value.</param>
+        <param index="2">Empty.</param>
+        <param index="3">Empty.</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
+    </enum>
+    <enum name="MAV_CMD_MNA_TAG_TAGS">
+      <entry value="0" name="MAV_CMD_MNA_TAG_TAGS_TAKEOFF_END">
+        <description>The end of the takeoff phase of the mission. All items before this tag are considered part of the takeoff.</description>
+      </entry>
+      <entry value="1" name="MAV_CMD_MNA_TAG_TAGS_LANDING_START">
+        <description>The start of the landing pahse of the mission. All items after this tag are considered part of the landing.</description>
+      </entry>
     </enum>
     <enum name="SCRIPTING_CMD">
       <entry value="0" name="SCRIPTING_CMD_REPL_START">
