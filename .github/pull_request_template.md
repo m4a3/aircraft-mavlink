@@ -1,29 +1,16 @@
-## Description
+## Notion Task
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+refs MNA-####
 
-## Linked Issue
+<!-- Replace #### with your task number. The keyword must be one of: fixes, closes, or refs (not "ref" alone).
 
-Use the following [guide](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) to see how to link an issue
+Examples that pass CI:
 
-fixes # (issue)
+  fixes MNA-xxxx
+  closes MNA-xxxx
+  refs MNA-xxxx
 
-## Reviewer checklist
-
-*Developers should check these first*
-
-- [ ] Branch has been rebased on to master branch
-- [ ] No dead code
-- [ ] Minimize nesting conditions
-- [ ] Code is DRY (no duplicated code or functionality)
-- [ ] Style guide adherence checked
-- [ ] Spelling checked
-- [ ] Milestone assigned
-- [ ] Ensure issue is mentioned at the start of each commit message (To be automated in future)
-- [ ] Changes documented in CHANGELOG
-
-## Screenshots/Diagrams (if appropriate)
-
-## Additional context
-
-Add any other context or screenshots about the feature request here.
+The CI check will verify the task exists in Notion and is not in a
+blocked status (Done, Completed). PRs without a valid reference will
+fail the "Verify Notion Task" check.
+-->
