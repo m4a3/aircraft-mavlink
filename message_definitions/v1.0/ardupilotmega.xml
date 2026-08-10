@@ -409,6 +409,37 @@
         <param index="6">Empty.</param>
         <param index="7">Empty.</param>
       </entry>
+      <entry value="43504" name="MAV_CMD_MNA_RAW_IMU_LOG" hasLocation="false" isDestination="false">
+        <description>Enable raw IMU logging for a bounded window. The window expires on its own so a dead requester cannot leave raw logging running.</description>
+        <param index="1" label="options" enum="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS">Which raw IMU data to log. 0 stops logging immediately.</param>
+        <param index="2" label="duration" units="s" minValue="0">Window duration, after which raw logging stops by itself.</param>
+        <param index="3">Empty.</param>
+        <param index="4">Empty.</param>
+        <param index="5">Empty.</param>
+        <param index="6">Empty.</param>
+        <param index="7">Empty.</param>
+      </entry>
+    </enum>
+    <enum name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS" bitmask="true">
+      <description>Which raw IMU data to log. Used in MAV_CMD_MNA_RAW_IMU_LOG.</description>
+      <entry value="0" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_NONE">
+        <description>Log nothing, stopping any window already open.</description>
+      </entry>
+      <entry value="1" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_PRIMARY_GYRO">
+        <description>Log the primary gyro only.</description>
+      </entry>
+      <entry value="2" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_ALL_GYROS">
+        <description>Log every gyro.</description>
+      </entry>
+      <entry value="4" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_POST_FILTER">
+        <description>Log post filter samples instead of pre filter.</description>
+      </entry>
+      <entry value="8" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_PRE_AND_POST_FILTER">
+        <description>Log both pre and post filter samples.</description>
+      </entry>
+      <entry value="16" name="MAV_CMD_MNA_RAW_IMU_LOG_OPTIONS_ACCEL">
+        <description>Also log raw accelerometer data, for whichever IMUs the gyro bits selected.</description>
+      </entry>
     </enum>
     <enum name="MAV_CMD_MNA_TAG_TAGS">
       <entry value="0" name="MAV_CMD_MNA_TAG_TAGS_TAKEOFF_END">
