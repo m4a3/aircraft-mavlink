@@ -2057,5 +2057,16 @@
       <field type="uint8_t" name="target_component">Component id, leave 0 by default.</field>
       <field type="uint8_t" name="fcu_vote">ID of the FCU voted.</field>
     </message>
+    <message id="12006" name="MNA_ESC_TELEMETRY">
+      <description>ESC telemetry for all 8 Manna motors, companion (VMS) to FCU, ingested into AP_ESC_Telem. Array index i corresponds to motor (i+1) in VMS Motor-enum order (0=FRU ... 7=RLL), which must match the FCU SERVOn_FUNCTION motor-output channel order. Stream at the ESC native rate (~10-25 Hz).</description>
+      <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+      <field type="uint8_t" name="target_system">Target FCU system id.</field>
+      <field type="uint8_t" name="target_component">Target FCU component id, leave 0 by default.</field>
+      <field type="int32_t[8]" name="rpm" units="rpm">Mechanical RPM per ESC in motor order. Signed; negative indicates reverse rotation.</field>
+      <field type="float[8]" name="voltage" units="V">DC bus-bar voltage per ESC.</field>
+      <field type="float[8]" name="current" units="A">DC bus-bar current per ESC.</field>
+      <field type="int16_t[8]" name="temperature" units="cdegC">Hottest of MOSFET/capacitor temperature per ESC. INT16_MAX if invalid.</field>
+      <field type="uint8_t" name="fault_bitmask" display="bitmask">Bit i set = motor (i+1) is reporting an ESC fault (TmotorTelemetry.fault).</field>
+    </message>
   </messages>
 </mavlink>
